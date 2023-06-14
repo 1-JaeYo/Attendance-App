@@ -58,6 +58,27 @@ app.use((req, res, next) => {
     next();
 });
 
+app.post('/attendance', async (req, res) => {
+    const attendance = new Attendance(req.body);
+    try {
+        await attendance.save();
+        res.status(201).send(attendance);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+app.get('/attendance', async (req, res) => {
+    try {
+        const attendance = await Attendance.find({});
+        res.status(200).send(attendance);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+
+
 
 app.use(authRoutes);
 app.use(attendanceRoutes);
